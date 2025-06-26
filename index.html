@@ -5,12 +5,12 @@
   <title>Sahasam Treasure Game</title>
   <style> 
    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  margin: 0;
+  padding: 20;
+  box-sizing: border-box;
+}
 
-    body {
+body {
   font-family: 'Segoe UI', sans-serif;
   height: 100vh;           
   overflow: hidden;       
@@ -20,7 +20,8 @@
   justify-content: center; 
   position: relative;     
 }
-    .background-overlay {
+
+.background-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -32,470 +33,583 @@
   z-index: -1;
 }
 
-
-    /* Landing Page Styles */
-    .landing-page {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      max-width: 800px;
-      height: 100%;
-      text-align: center;
-    }
-
-    .movie-poster {
-      width: min(60vw, 300px);
-      height: auto;
-      margin-bottom: 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .landing-title {
-      color: #e5b014;
-      font-size: clamp(28px, 8vw, 36px);
-      font-weight: bold;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    }
-
-    .landing-subtitle {
-      color: #ffffff;
-      font-size: clamp(16px, 4vw, 18px);
-      margin-bottom: 40px;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-    }
-
-    .start-game-btn {
-      padding: 15px 30px;
-      font-size: clamp(18px, 5vw, 20px);
-      font-weight: bold;
-      background: linear-gradient(45deg, #e5b014, #f0c419);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(229, 176, 20, 0.4);
-      text-transform: uppercase;
-      min-width: 150px;
-    }
-
-    .start-game-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(229, 176, 20, 0.6);
-    }
-
-    /* Game Container Styles */
-    .game-container {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      max-width: 100vw;
-      height: 100vh;
-      padding: 10px;
-    }
-
-    .sahasam-logo {
-      width: min(50vw, 300px);
-      height: auto;
-      margin-bottom: clamp(10px, 3vh, 20px);
-    }
-
-    h1 {
-      margin-bottom: clamp(15px, 4vh, 30px);
-      color: #e5b014;
-      font-size: clamp(18px, 5vw, 24px);
-      text-align: center;
-    }
-
-    #timer {
-      font-size: clamp(16px, 4.5vw, 18px);
-      color: #e3342f;
-      font-weight: bold;
-      margin-bottom: clamp(15px, 4vh, 25px);
-      text-align: center;
-    }
-
-    #game-board {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: min(3vw, 15px);
-      justify-content: center;
-      margin-bottom: clamp(20px, 5vh, 30px);
-      width: min(90vw, 400px);
-      max-width: 400px;
-    }
-
-    .card {
-      width: 100%;
-      aspect-ratio: 1;
-      min-width: 60px;
-      max-width: 100px;
-      perspective: 1000px;
-      cursor: pointer;
-    }
-
-    .inner {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-    }
-
-    .card.flipped .inner {
-      transform: rotateY(180deg);
-    }
-
-    .front, .back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      border: 2px solid #f0f0f0;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: clamp(18px, 5vw, 24px);
-      font-weight: bold;
-    }
-
-    .front {
-      background: #f59e0b;
-      color: transparent;
-    }
-
-    .back {
-      background: #1a1a1a;
-      color: white;
-      transform: rotateY(180deg);
-    }
-
-    #message {
-      font-size: clamp(16px, 4.5vw, 18px);
-      text-align: center;
-      font-weight: bold;
-      min-height: 25px;
-      color: #ffffff;
-    }
-
-    /* Popup Modal Styles */
-    .popup-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-
-    .popup-content {
-      background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
-      padding: clamp(20px, 6vh, 40px);
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-      border: 2px solid #e5b014;
-      max-width: 90vw;
-      width: min(400px, 90vw);
-    }
-
-    .popup-icon {
-      font-size: clamp(40px, 12vw, 60px);
-      margin-bottom: 20px;
-    }
-
-    .popup-title {
-      font-size: clamp(20px, 6vw, 28px);
-      font-weight: bold;
-      margin-bottom: 15px;
-      color: #e5b014;
-    }
-
-    .popup-message {
-      font-size: clamp(14px, 4vw, 18px);
-      margin-bottom: 30px;
-      color: #ffffff;
-    }
-
-    .popup-buttons {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .popup-btn {
-      padding: 12px 20px;
-      font-size: clamp(14px, 4vw, 16px);
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      min-width: 100px;
-    }
-
-    .play-again-btn {
-      background: linear-gradient(45deg, #10b981, #059669);
-      color: white;
-    }
-
-    .play-again-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
-    }
-
-    .back-home-btn {
-      background: linear-gradient(45deg, #6b7280, #4b5563);
-      color: white;
-    }
-
-    .back-home-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(107, 114, 128, 0.4);
-    }
-
-    /* Win popup specific styles */
-    .popup-content.win {
-      border-color: #10b981;
-      background: linear-gradient(135deg, #064e3b, #065f46);
-    }
-
-    .popup-content.win .popup-icon {
-      color: #10b981;
-    }
-
-    .popup-content.win .popup-title {
-      color: #10b981;
-    }
-
-    /* Lose popup specific styles */
-    .popup-content.lose {
-      border-color: #ef4444;
-      background: linear-gradient(135deg, #7f1d1d, #991b1b);
-    }
-
-    .popup-content.lose .popup-icon {
-      color: #ef4444;
-    }
-
-    .popup-content.lose .popup-title {
-      color: #ef4444;
-    }
-
-    /* Progress Display */
-    .progress-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: clamp(15px, 4vh, 20px);
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .progress-text {
-      color: #e5b014;
-      font-size: clamp(14px, 4vw, 18px);
-      font-weight: bold;
-      margin-right: 10px;
-    }
-
-    .letter-progress {
-      display: flex;
-      gap: min(2vw, 8px);
-    }
-
-    .letter-slot {
-      width: min(8vw, 35px);
-      height: min(8vw, 35px);
-      min-width: 25px;
-      min-height: 25px;
-      border: 2px solid #e5b014;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: clamp(12px, 3.5vw, 16px);
-      font-weight: bold;
-      color: #666;
-      background: rgba(229, 176, 20, 0.1);
-      transition: all 0.5s ease;
-    }
-
-    .letter-slot.found {
-      background: linear-gradient(45deg, #10b981, #059669);
-      color: white;
-      border-color: #10b981;
-      transform: scale(1.1);
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
-    }
-
-    /* Animation Classes */
-    .shake {
-      animation: shake 0.6s ease-in-out;
-    }
-
-    .pulse-correct {
-      animation: pulseCorrect 0.8s ease-in-out;
-    }
-
-    .bounce-in {
-      animation: bounceIn 0.6s ease-out;
-    }
-
-    .glow-effect {
-      animation: glow 1s ease-in-out;
-    }
-
-    .celebration {
-      animation: celebration 1.5s ease-in-out;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
-      20%, 40%, 60%, 80% { transform: translateX(8px); }
-    }
-
-    @keyframes pulseCorrect {
-      0% { transform: scale(1); box-shadow: 0 0 0 rgba(16, 185, 129, 0.7); }
-      50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(16, 185, 129, 0.7); }
-      100% { transform: scale(1); box-shadow: 0 0 0 rgba(16, 185, 129, 0); }
-    }
-
-    @keyframes bounceIn {
-      0% { transform: scale(0.3); opacity: 0; }
-      50% { transform: scale(1.05); }
-      70% { transform: scale(0.9); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    @keyframes glow {
-      0%, 100% { box-shadow: 0 0 5px rgba(229, 176, 20, 0.5); }
-      50% { box-shadow: 0 0 25px rgba(229, 176, 20, 0.8), 0 0 35px rgba(229, 176, 20, 0.6); }
-    }
-
-    @keyframes celebration {
-      0%, 100% { transform: rotate(0deg) scale(1); }
-      25% { transform: rotate(-5deg) scale(1.05); }
-      50% { transform: rotate(5deg) scale(1.1); }
-      75% { transform: rotate(-3deg) scale(1.05); }
-    }
-
-    /* Particle Effects */
-    .particle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: #e5b014;
-      border-radius: 50%;
-      pointer-events: none;
-      animation: particle-float 1s ease-out forwards;
-    }
-
-    @keyframes particle-float {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-60px) scale(0);
-        opacity: 0;
-      }
-    }
-
-    /* Enhanced card states */
-    .card.correct {
-      animation: pulseCorrect 0.8s ease-in-out;
-    }
-
-    .card.wrong {
-      animation: shake 0.6s ease-in-out;
-    }
-
-    .card.found {
-      border: 2px solid #10b981;
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
-    }
-
-    /* Mobile-specific optimizations */
-    @media (max-width: 480px) {
-      body {
-        padding: 5px;
-      }
-
-      #game-board {
-        width: 95vw;
-        gap: 2vw;
-      }
-
-      .card {
-        min-width: 70px;
-      }
-
-      .popup-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .popup-btn {
-        width: 100%;
-        max-width: 200px;
-      }
-    }
-
-    /* Landscape orientation adjustments */
-    @media (orientation: landscape) and (max-height: 600px) {
-      .sahasam-logo {
-        width: min(25vh, 150px);
-        margin-bottom: 1vh;
-      }
-      
-      h1 {
-        font-size: clamp(16px, 3vh, 20px);
-        margin-bottom: 2vh;
-      }
-      
-      #timer {
-        margin-bottom: 2vh;
-        font-size: clamp(14px, 3vh, 16px);
-      }
-
-      .progress-container {
-        margin-bottom: 2vh;
-      }
-      
-      #game-board {
-        margin-bottom: 3vh;
-        width: min(60vh, 350px);
-      }
-
-      .movie-poster {
-        width: min(40vh, 200px);
-        margin-bottom: 3vh;
-      }
-
-      .landing-title {
-        font-size: clamp(20px, 5vh, 28px);
-        margin-bottom: 2vh;
-      }
-
-      .landing-subtitle {
-        font-size: clamp(14px, 3vh, 16px);
-        margin-bottom: 4vh;
-      }
-    }
+/* Landing Page Styles */
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 800px;
+  height: 100%;
+  text-align: center;
+  padding: 20px;
+}
+
+.movie-poster {
+  width: min(70vw, 350px);
+  height: auto;
+  margin-bottom: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.landing-title {
+  color: #e5b014;
+  font-size: clamp(32px, 10vw, 42px);
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+.landing-subtitle {
+  color: #ffffff;
+  font-size: clamp(18px, 5vw, 22px);
+  margin-bottom: 40px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.start-game-btn {
+  padding: 18px 36px;
+  font-size: clamp(20px, 6vw, 24px);
+  font-weight: bold;
+  background: linear-gradient(45deg, #e5b014, #f0c419);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(229, 176, 20, 0.4);
+  text-transform: uppercase;
+  min-width: 180px;
+}
+
+.start-game-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(229, 176, 20, 0.6);
+}
+
+/* Game Container Styles */
+.game-container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100vw;
+  height: 100vh;
+  padding: 15px;
+}
+
+.sahasam-logo {
+  width: min(60vw, 350px);
+  height: auto;
+  margin-bottom: clamp(15px, 4vh, 25px);
+}
+
+h1 {
+  margin-bottom: clamp(20px, 5vh, 35px);
+  color: #e5b014;
+  font-size: clamp(24px, 7vw, 32px);
+  text-align: center;
+  font-weight: bold;
+}
+
+#timer {
+  font-size: clamp(20px, 6vw, 24px);
+  color: #e3342f;
+  font-weight: bold;
+  margin-bottom: clamp(20px, 5vh, 30px);
+  text-align: center;
+}
+
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: min(4vw, 20px);
+  justify-content: center;
+  margin-bottom: clamp(25px, 6vh, 35px);
+  width: min(95vw, 450px);
+  max-width: 450px;
+}
+
+.card {
+  width: 100%;
+  aspect-ratio: 1;
+  min-width: 80px;
+  max-width: 120px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card.flipped .inner {
+  transform: rotateY(180deg);
+}
+
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border: 3px solid #f0f0f0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(24px, 7vw, 32px);
+  font-weight: bold;
+}
+
+.front {
+  background: #f59e0b;
+  color: transparent;
+}
+
+.back {
+  background: #1a1a1a;
+  color: white;
+  transform: rotateY(180deg);
+}
+
+#message {
+  font-size: clamp(18px, 5.5vw, 22px);
+  text-align: center;
+  font-weight: bold;
+  min-height: 30px;
+  color: #ffffff;
+}
+
+/* Popup Modal Styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+  padding: clamp(25px, 7vh, 45px);
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  border: 2px solid #e5b014;
+  max-width: 90vw;
+  width: min(450px, 90vw);
+}
+
+.popup-icon {
+  font-size: clamp(50px, 15vw, 70px);
+  margin-bottom: 25px;
+}
+
+.popup-title {
+  font-size: clamp(26px, 8vw, 34px);
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #e5b014;
+}
+
+.popup-message {
+  font-size: clamp(16px, 5vw, 20px);
+  margin-bottom: 35px;
+  color: #ffffff;
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.popup-btn {
+  padding: 15px 25px;
+  font-size: clamp(16px, 5vw, 18px);
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.play-again-btn {
+  background: linear-gradient(45deg, #10b981, #059669);
+  color: white;
+}
+
+.play-again-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+}
+
+.back-home-btn {
+  background: linear-gradient(45deg, #6b7280, #4b5563);
+  color: white;
+}
+
+.back-home-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(107, 114, 128, 0.4);
+}
+
+/* Win popup specific styles */
+.popup-content.win {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #064e3b, #065f46);
+}
+
+.popup-content.win .popup-icon {
+  color: #10b981;
+}
+
+.popup-content.win .popup-title {
+  color: #10b981;
+}
+
+/* Lose popup specific styles */
+.popup-content.lose {
+  border-color: #ef4444;
+  background: linear-gradient(135deg, #7f1d1d, #991b1b);
+}
+
+.popup-content.lose .popup-icon {
+  color: #ef4444;
+}
+
+.popup-content.lose .popup-title {
+  color: #ef4444;
+}
+
+/* Progress Display */
+.progress-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: clamp(20px, 5vh, 25px);
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.progress-text {
+  color: #e5b014;
+  font-size: clamp(18px, 5vw, 22px);
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.letter-progress {
+  display: flex;
+  gap: min(3vw, 12px);
+}
+
+.letter-slot {
+  width: min(10vw, 45px);
+  height: min(10vw, 45px);
+  min-width: 35px;
+  min-height: 35px;
+  border: 3px solid #e5b014;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(16px, 4.5vw, 20px);
+  font-weight: bold;
+  color: #666;
+  background: rgba(229, 176, 20, 0.1);
+  transition: all 0.5s ease;
+}
+
+.letter-slot.found {
+  background: linear-gradient(45deg, #10b981, #059669);
+  color: white;
+  border-color: #10b981;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+}
+
+/* Animation Classes */
+.shake {
+  animation: shake 0.6s ease-in-out;
+}
+
+.pulse-correct {
+  animation: pulseCorrect 0.8s ease-in-out;
+}
+
+.bounce-in {
+  animation: bounceIn 0.6s ease-out;
+}
+
+.glow-effect {
+  animation: glow 1s ease-in-out;
+}
+
+.celebration {
+  animation: celebration 1.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+  20%, 40%, 60%, 80% { transform: translateX(8px); }
+}
+
+@keyframes pulseCorrect {
+  0% { transform: scale(1); box-shadow: 0 0 0 rgba(16, 185, 129, 0.7); }
+  50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(16, 185, 129, 0.7); }
+  100% { transform: scale(1); box-shadow: 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(229, 176, 20, 0.5); }
+  50% { box-shadow: 0 0 25px rgba(229, 176, 20, 0.8), 0 0 35px rgba(229, 176, 20, 0.6); }
+}
+
+@keyframes celebration {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-5deg) scale(1.05); }
+  50% { transform: rotate(5deg) scale(1.1); }
+  75% { transform: rotate(-3deg) scale(1.05); }
+}
+
+/* Particle Effects */
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #e5b014;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-float 1s ease-out forwards;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Enhanced card states */
+.card.correct {
+  animation: pulseCorrect 0.8s ease-in-out;
+}
+
+.card.wrong {
+  animation: shake 0.6s ease-in-out;
+}
+
+.card.found {
+  border: 2px solid #10b981;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .landing-page {
+    padding: 15px;
+  }
+
+  .movie-poster {
+    width: 80vw;
+    margin-bottom: 25px;
+  }
+
+  .landing-title {
+    font-size: clamp(28px, 9vw, 38px);
+    margin-bottom: 15px;
+  }
+
+  .landing-subtitle {
+    font-size: clamp(16px, 4.5vw, 20px);
+    margin-bottom: 30px;
+  }
+
+  .start-game-btn {
+    padding: 16px 32px;
+    font-size: clamp(18px, 5.5vw, 22px);
+    min-width: 160px;
+  }
+
+  .sahasam-logo {
+    width: 70vw;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: clamp(22px, 6.5vw, 28px);
+    margin-bottom: 25px;
+  }
+
+  #timer {
+    font-size: clamp(18px, 5.5vw, 22px);
+    margin-bottom: 25px;
+  }
+
+  #game-board {
+    width: 95vw;
+    gap: 3.5vw;
+    margin-bottom: 30px;
+  }
+
+  .card {
+    min-width: 70px;
+  }
+
+  .front, .back {
+    border: 2px solid #f0f0f0;
+    border-radius: 8px;
+    font-size: clamp(20px, 6vw, 28px);
+  }
+
+  .progress-text {
+    font-size: clamp(16px, 4.5vw, 20px);
+  }
+
+  .letter-slot {
+    width: min(9vw, 40px);
+    height: min(9vw, 40px);
+    min-width: 30px;
+    min-height: 30px;
+    font-size: clamp(14px, 4vw, 18px);
+  }
+
+  #message {
+    font-size: clamp(16px, 5vw, 20px);
+  }
+
+  .popup-content {
+    padding: 30px 20px;
+    width: 95vw;
+  }
+
+  .popup-icon {
+    font-size: clamp(40px, 12vw, 60px);
+    margin-bottom: 20px;
+  }
+
+  .popup-title {
+    font-size: clamp(24px, 7vw, 30px);
+    margin-bottom: 15px;
+  }
+
+  .popup-message {
+    font-size: clamp(14px, 4.5vw, 18px);
+    margin-bottom: 25px;
+  }
+
+  .popup-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .popup-btn {
+    width: 100%;
+    max-width: 220px;
+    padding: 14px 20px;
+    font-size: clamp(16px, 4.5vw, 18px);
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+  .card {
+    min-width: 65px;
+  }
+
+  .front, .back {
+    font-size: clamp(18px, 5.5vw, 24px);
+  }
+
+  #game-board {
+    gap: 3vw;
+  }
+
+  .letter-slot {
+    min-width: 28px;
+    min-height: 28px;
+    font-size: clamp(12px, 3.5vw, 16px);
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media (orientation: landscape) and (max-height: 600px) {
+  .sahasam-logo {
+    width: min(30vh, 180px);
+    margin-bottom: 2vh;
+  }
+  
+  h1 {
+    font-size: clamp(18px, 4vh, 24px);
+    margin-bottom: 3vh;
+  }
+  
+  #timer {
+    margin-bottom: 3vh;
+    font-size: clamp(16px, 4vh, 20px);
+  }
+
+  .progress-container {
+    margin-bottom: 3vh;
+  }
+  
+  #game-board {
+    margin-bottom: 4vh;
+    width: min(70vh, 400px);
+  }
+
+  .movie-poster {
+    width: min(50vh, 250px);
+    margin-bottom: 4vh;
+  }
+
+  .landing-title {
+    font-size: clamp(24px, 6vh, 32px);
+    margin-bottom: 3vh;
+  }
+
+  .landing-subtitle {
+    font-size: clamp(16px, 4vh, 20px);
+    margin-bottom: 5vh;
+  }
+
+  .start-game-btn {
+    padding: 14px 28px;
+    font-size: clamp(16px, 4vh, 20px);
+  }
+}
    
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
